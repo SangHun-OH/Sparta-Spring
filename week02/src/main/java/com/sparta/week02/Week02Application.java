@@ -19,7 +19,6 @@ public class Week02Application {
     public static void main(String[] args) {
         SpringApplication.run(Week02Application.class, args);
     }
-
     @Bean
     public CommandLineRunner demo(CourseRepository courseRepository, CourseService courseService) {
         return (args) -> {
