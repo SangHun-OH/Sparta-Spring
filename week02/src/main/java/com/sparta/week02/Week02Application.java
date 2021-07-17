@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.List;
 
-
 @EnableJpaAuditing
 @SpringBootApplication
 public class Week02Application {
