@@ -49,5 +49,5 @@ public class CourseController {
         return id;
     }
 
-
 }
+// json으로 자동 응답
