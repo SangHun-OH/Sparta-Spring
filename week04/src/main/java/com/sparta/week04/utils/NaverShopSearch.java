@@ -1,10 +1,18 @@
 package com.sparta.week04.utils;
 
+import com.sparta.week04.models.ItemDto;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
+@Component // @RequiredArgsConstructor 와 함께 사용될 경우 스프링이 자동으로 생성한다.
 public class NaverShopSearch {
     public String search(String query) {
         RestTemplate rest = new RestTemplate();
@@ -14,7 +22,7 @@ public class NaverShopSearch {
         String body = "";
 
         HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
-        ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+query, HttpMethod.GET, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query=" + query, HttpMethod.GET, requestEntity, String.class);
         HttpStatus httpStatus = responseEntity.getStatusCode();
         int status = httpStatus.value();
         String response = responseEntity.getBody();
@@ -24,23 +32,23 @@ public class NaverShopSearch {
         return response;
     }
 
-    public static void main(String[] args) {
-        NaverShopSearch naverShopSearch = new NaverShopSearch();
-        String result = naverShopSearch.search("아이맥");
-
+    public List<ItemDto> fromJSONtoItems(String result) {
         JSONObject rjson = new JSONObject(result);
-        JSONArray items = rjson.getJSONArray("items");
+        JSONArray items  = rjson.getJSONArray("items");
+
+        List<ItemDto> ret = new ArrayList<>();
 
         for (int i=0; i<items.length(); i++) {
-            JSONObject itemJson = (JSONObject) items.get(i);
-            JSONObject itemJson2 = items.getJSONObject(i);
-
-            String title = itemJson.getString("title");
-            String image = itemJson.getString("image");
-            int lprice = itemJson.getInt("lprice");
+            JSONObject itemJson = items.getJSONObject(i);
+            ItemDto itemDto = new ItemDto(itemJson);
+            ret.add(itemDto);
         }
+        return ret;
+    }
 
-
-
+    public static void main(String[] args) {
+        NaverShopSearch naverShopSearch = new NaverShopSearch();
+        String ret = naverShopSearch.search("아이맥");
+        naverShopSearch.fromJSONtoItems(ret);
     }
 }

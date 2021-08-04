@@ -44,4 +44,10 @@ public class Product extends Timestamped{
     public void update(ProductMypriceRequestDto requestDto) {
         this.myprice = requestDto.getMyprice();
     }
+
+    // 스케쥴러에 의한 업데이트
+    public void updateByItemDto(ItemDto itemDto) {
+        this.lprice = itemDto.getLprice();
+    }
+
 }
