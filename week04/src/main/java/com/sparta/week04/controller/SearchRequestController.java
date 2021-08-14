@@ -16,6 +16,7 @@ public class SearchRequestController {
 
     private final NaverShopSearch naverShopSearch;
 
+    
     @GetMapping("/api/search")
     public List<ItemDto> getItems(@RequestParam String query) {
         //RequestParam을 반드시 사용. 파라미터를 넣어주려면 써야하는 어노테이션.
